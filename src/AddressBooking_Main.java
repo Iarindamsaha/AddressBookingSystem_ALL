@@ -7,10 +7,21 @@ public class AddressBooking_Main {
 
     public static void main(String[] args) {
 
+        Scanner sc  = new Scanner(System.in);
+
         System.out.println("---Welcome To The Address Book Storing System---");
         AddressBookFeatures contact = new AddressBookFeatures();
         contact.addNew();
         contact.displayContacts();
+        System.out.println("Do You Want To Edit The Contact");
+        char in = sc.next().charAt(0);
+        if (in == 'Y' || in == 'y'){
+            contact.editContact();
+        }
+        else {
+            System.out.println("Thank You for using the address book service");
+        }
+
     }
 
 }
@@ -47,6 +58,23 @@ class AddressBookFeatures{
         String email = gh.nextLine();
 
         contact = new ContactStoring(firstName,lastName,address,city,state,zip,phoneNumber,email);
+    }
+
+    public void editContact(){
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter The Name To Edit");
+        String input = sc.nextLine();
+
+        if(input.equalsIgnoreCase(contact.getFirstName())){
+            addNew();
+            System.out.println("Contact After Editing");
+            displayContacts();
+        }
+        else {
+            System.out.println("Input Not Matching");
+            editContact();
+        }
     }
 
     public void displayContacts(){
