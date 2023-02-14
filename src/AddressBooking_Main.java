@@ -11,18 +11,16 @@ public class AddressBooking_Main {
 
         System.out.println("---Welcome To The Address Book Storing System---");
         AddressBookFeatures contact = new AddressBookFeatures();
-        //contact.addNew();
-        //contact.displayContacts();
+
         int in;
         do {
-            System.out.println("Press 0 to add contact\nPress 1 for edit\nPress 2 for delete\nPress 5 to Close");
+            System.out.println("Press 0 to add contact\nPress 1 for edit\nPress 2 for delete\nPress 4 for display\nPress 5 to Close");
             in = sc.nextInt();
             switch (in) {
 
                 case 0:{
 
                     contact.addNew();
-                    contact.displayContacts();
                     break;
 
                 }
@@ -39,6 +37,13 @@ public class AddressBooking_Main {
                     break;
                 }
 
+                case 4:{
+
+                    contact.displayContacts();
+                    break;
+
+                }
+
                 case 5:{
 
                     System.out.println("Application Closing || Thank You For Using Address Book Service");
@@ -49,14 +54,19 @@ public class AddressBooking_Main {
                     System.out.println("Please Enter The Correct Choice");
                     break;
             }
+
         } while(in != 5);
     }
 }
 
 
-class AddressBookFeatures{
+class AddressBookFeatures {
+
+    int size;
+    ContactStoring[] multipleContacts = new ContactStoring[150];
     ContactStoring contact;
-    public void addNew(){
+
+    public void addNew() {
 
         Scanner sc = new Scanner(System.in);
         Scanner gh = new Scanner(System.in);
@@ -85,10 +95,11 @@ class AddressBookFeatures{
         System.out.println("Enter Your Email Address");
         String email = gh.nextLine();
 
-        contact = new ContactStoring(firstName,lastName,address,city,state,zip,phoneNumber,email);
+        contact = new ContactStoring(firstName, lastName, address, city, state, zip, phoneNumber, email);
+        multipleContacts[size++] = contact;
     }
 
-    public void editContact(){
+    public void editContact() {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter The Name To Edit");
@@ -100,35 +111,38 @@ class AddressBookFeatures{
             displayContacts();
         }
         else {
+
             System.out.println("Input Not Matching");
             editContact();
         }
     }
 
-    public void deleteByName(){
+    public void deleteByName() {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter The FirstName");
         String input = sc.nextLine();
-        if(input.equalsIgnoreCase(contact.getFirstName())){
+        if (input.equalsIgnoreCase(contact.getFirstName())) {
             contact = null;
             System.out.println("The Contact is Deleted Successfully");
             displayContacts();
             System.out.println("The Address Book is Empty");
-        }
-        else{
+        } else {
             System.out.println("Input Does Not Match With the Contact");
             deleteByName();
         }
     }
 
-    public void displayContacts(){
+    public void displayContacts() {
 
-        System.out.println(contact);
+        for (int i = 0; i < multipleContacts.length; i++) {
+            if (multipleContacts[i] != null) {
+                System.out.println(multipleContacts[i]);
+            }
 
+        }
     }
 }
-
 class ContactStoring{
     private String firstName;
     private String lastName;
