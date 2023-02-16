@@ -18,22 +18,44 @@ public class AddressBooking_Main {
             in = sc.nextInt();
             switch (in) {
 
-                case 0:{
+                case 0: {
 
-                    contact.addNew();
+                    System.out.println("How Many Contacts You Want To Store?");
+                    int input = sc.nextInt();
+
+                    for (int i = 0; i < input; i++) {
+
+                        contact.addNew();
+
+                    }
                     break;
-
                 }
+
+
 
                 case 1: {
 
-                    contact.editContact();
+                    System.out.println("Enter Your PhoneNumber For Confirmation : ");
+                    long phoneNumber = sc.nextLong();
+                    boolean updated = contact.editContact(phoneNumber);
+                    if (updated) {
+                        System.out.println("Contact Updated.");
+                    } else {
+                        System.out.println("Contact not found");
+                    }
                     break;
                 }
 
                 case 2:{
 
-                    contact.deleteByName();
+                    System.out.println("Enter Your PhoneNumber For Confirmation : ");
+                    long phoneNumber = sc.nextLong();
+                    boolean updated = contact.deleteByName(phoneNumber);
+                    if (updated) {
+                        System.out.println("Contact Deleted.");
+                    } else {
+                        System.out.println("Contact not found");
+                    }
                     break;
                 }
 
@@ -66,25 +88,26 @@ class AddressBookFeatures {
     ContactStoring[] multipleContacts = new ContactStoring[150];
     ContactStoring contact;
 
+    Scanner sc = new Scanner(System.in);
+
     public void addNew() {
 
-        Scanner sc = new Scanner(System.in);
-        Scanner gh = new Scanner(System.in);
+        //Scanner sc = new Scanner(System.in);
 
         System.out.println("Enter First Name");
-        String firstName = sc.nextLine();
+        String firstName = sc.next();
 
         System.out.println("Enter The Last Name");
-        String lastName = sc.nextLine();
+        String lastName = sc.next();
 
-        System.out.println("Enter Your Address");
-        String address = sc.nextLine();
+        //System.out.println("Enter Your Address");
+        //String address = sc.nextLine();
 
         System.out.println("Enter Your City");
-        String city = sc.nextLine();
+        String city = sc.next();
 
         System.out.println("Enter Your State");
-        String state = sc.nextLine();
+        String state = sc.next();
 
         System.out.println("Enter Pin Number");
         int zip = sc.nextInt();
@@ -93,44 +116,59 @@ class AddressBookFeatures {
         long phoneNumber = sc.nextLong();
 
         System.out.println("Enter Your Email Address");
-        String email = gh.nextLine();
+        String email = sc.next();
 
-        contact = new ContactStoring(firstName, lastName, address, city, state, zip, phoneNumber, email);
+        contact = new ContactStoring(firstName, lastName,  city, state, zip, phoneNumber, email);
         multipleContacts[size++] = contact;
     }
 
-    public void editContact() {
+    public boolean editContact(long phoneNumber) {
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter The Name To Edit");
-        String input = sc.nextLine();
+        for (int i = 0; i < multipleContacts.length; i++) {
+            if (multipleContacts[i] != null && multipleContacts[i].getPhoneNumber() == phoneNumber ) {
 
-        if(input.equalsIgnoreCase(contact.getFirstName())){
-            addNew();
-            System.out.println("Contact After Editing");
-            displayContacts();
+                System.out.println("Enter First Name");
+                String firstName = sc.next();
+
+                System.out.println("Enter last Name");
+                String lastName = sc.next();
+
+                System.out.println("Enter Your City");
+                String city = sc.next();
+
+                System.out.println("Enter Your State");
+                String state = sc.next();
+
+                System.out.println("Enter Your Pin Number");
+                int zip = sc.nextInt();
+
+                System.out.println("Enter Your Email");
+                String email = sc.next();
+
+                multipleContacts[i].setFirstName(firstName);
+                multipleContacts[i].setLastName(lastName);
+                multipleContacts[i].setCity(city);
+                multipleContacts[i].setState(state);
+                multipleContacts[i].setZip(zip);
+                multipleContacts[i].setEmail(email);
+                return true;
+            }
         }
-        else {
-
-            System.out.println("Input Not Matching");
-            editContact();
-        }
+        return false;
     }
 
-    public void deleteByName() {
+    public boolean deleteByName(long phoneNumber) {
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter The FirstName");
-        String input = sc.nextLine();
-        if (input.equalsIgnoreCase(contact.getFirstName())) {
-            contact = null;
-            System.out.println("The Contact is Deleted Successfully");
-            displayContacts();
-            System.out.println("The Address Book is Empty");
-        } else {
-            System.out.println("Input Does Not Match With the Contact");
-            deleteByName();
+        for (int i = 0; i < multipleContacts.length; i++) {
+            if (multipleContacts[i] != null && multipleContacts[i].getPhoneNumber() == phoneNumber ) {
+                for (int j = i; j < multipleContacts.length - 2; j++) {
+                    multipleContacts[j] = multipleContacts[j + 1];
+                }
+                return true;
+            }
+
         }
+        return false;
     }
 
     public void displayContacts() {
@@ -143,6 +181,7 @@ class AddressBookFeatures {
         }
     }
 }
+
 class ContactStoring{
     private String firstName;
     private String lastName;
@@ -153,10 +192,11 @@ class ContactStoring{
     private long phoneNumber;
     private String email;
 
-    public ContactStoring(String firstName, String lastName, String address, String city, String state, int zip, long phoneNumber, String email) {
+
+    public ContactStoring(String firstName, String lastName,  String city, String state, int zip, long phoneNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        //this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
