@@ -50,7 +50,7 @@ public class AddressBooking_Main {
 
                     System.out.println("Enter Your PhoneNumber For Confirmation : ");
                     long phoneNumber = sc.nextLong();
-                    boolean updated = contact.deleteByName(phoneNumber);
+                    boolean updated = contact.deleteByPhoneNumber(phoneNumber);
                     if (updated) {
                         System.out.println("Contact Deleted.");
                     } else {
@@ -157,7 +157,7 @@ class AddressBookFeatures {
         return false;
     }
 
-    public boolean deleteByName(long phoneNumber) {
+    public boolean deleteByPhoneNumber(long phoneNumber) {
 
         for (int i = 0; i < multipleContacts.length; i++) {
             if (multipleContacts[i] != null && multipleContacts[i].getPhoneNumber() == phoneNumber ) {
