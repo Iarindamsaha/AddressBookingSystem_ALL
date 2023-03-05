@@ -158,6 +158,7 @@ class AddressBookFeatures {
                         System.out.print("Enter Your Email Address : ");
                         String email = sc.next();
 
+
                         contact = new ContactStoring(firstName, lastName, city, state, zip, phoneNumber, email);
 
                         info.add(contact);
