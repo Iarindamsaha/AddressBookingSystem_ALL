@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.SortedMap;
+import java.util.*;
+
 
 public class AddressBooking_Main {
 
@@ -9,45 +7,43 @@ public class AddressBooking_Main {
 
         Scanner sc = new Scanner(System.in);
 
+
+
         System.out.println("---Welcome To The Address Book Storing System---");
         AddressBookFeatures contact = new AddressBookFeatures();
 
+
         int in;
         do {
-            System.out.println("Press 0 to add contact\nPress 1 for edit\nPress 2 for delete\nPress 4 for display\nPress 5 to Close");
+
+            System.out.println("-->>Press 0 to Add AddressBooks<<--" +
+                    "\n-->>Press 1 To Edit Contacts<<--" +
+                    "\n-->>Press 2 To Delete Contacts<<--\n-->>Press 3 To Delete Address Book<<--" +
+                    "\n-->>Press 4 To Display The Address Books<<--" +
+                    "\n-->>Press 5 To Close The Program<<--");
+            System.out.println();
+            System.out.print("YOUR INPUT --->> ");
             in = sc.nextInt();
             switch (in) {
 
                 case 0: {
 
-                    System.out.println("How Many Contacts You Want To Store?");
-
-                    int input = sc.nextInt();
-
-                    for (int i = 0; i < input; i++) {
-
-                        boolean update = contact.addNew();
-                        if (update){
-
-                            System.out.println("---Contact Already Exist---");
-                        }
-                        else {
-                            System.out.println("---Contact Added SuccessFully---");
-                        }
-
-
-                    }
-
+                    contact.addNew();
                     break;
+
                 }
 
 
 
                 case 1: {
 
-                    System.out.println("Enter Your PhoneNumber For Confirmation : ");
+                    System.out.print("Enter The Address Book Name: ");
+                    String userInput = sc.next();
+
+                    System.out.print("Enter Your PhoneNumber For Confirmation: ");
                     long phoneNumber = sc.nextLong();
-                    boolean updated = contact.editContact(phoneNumber);
+                    boolean updated = contact.editContact(phoneNumber,userInput);
+
                     if (updated) {
                         System.out.println("---Contact Updated---");
                     } else {
@@ -58,9 +54,12 @@ public class AddressBooking_Main {
 
                 case 2:{
 
-                    System.out.println("Enter Your PhoneNumber For Confirmation : ");
+                    System.out.print("Enter The Address Book Name: ");
+                    String userInput = sc.next();
+
+                    System.out.print("Enter Your PhoneNumber For Confirmation : ");
                     long phoneNumber = sc.nextLong();
-                    boolean updated = contact.deleteByNumber(phoneNumber);
+                    boolean updated = contact.deleteByNumber(phoneNumber,userInput);
                     if (updated) {
                         System.out.println("---Contact Deleted---");
                     } else {
@@ -78,8 +77,24 @@ public class AddressBooking_Main {
 
                 case 5:{
 
-                    System.out.println("Application Closing || Thank You For Using Address Book Service");
+                    System.out.println("--->Application Closing || Thank You For Using Address Book Service<---");
                     break;
+                }
+
+                case 3:{
+
+                    System.out.print("Enter The Address Book Name: ");
+                    String userInput = sc.next();
+                    boolean updated = contact.deleteAddressBook(userInput);
+                    if (updated){
+                        System.out.println("---Address Book Deleted---");
+                    }
+                    else{
+                        System.out.println("---Address Book Not Found---");
+                    }
+                    break;
+
+
                 }
 
                 default:
@@ -88,117 +103,169 @@ public class AddressBooking_Main {
             }
 
         } while(in != 5);
+
     }
 }
 
 
 class AddressBookFeatures {
 
-    int size;
-    ArrayList<ContactStoring> info = new ArrayList<>();
+
+    List<ContactStoring> info = new LinkedList<>();
+
+    HashMap<String, ArrayList> multipleAddressBook = new HashMap<>();
+
     ContactStoring contact;
+
 
     Scanner sc = new Scanner(System.in);
 
-    public boolean addNew() {
+    public void addNew() {
+
+        ArrayList<ContactStoring> temp = new ArrayList<>();
+
+        System.out.print("Enter AddressBook Name : ");
+        String input2 = sc.next();
+
+        if(multipleAddressBook.containsKey(input2)){
+            System.out.println("-----Address Book Already Exists-----");
+        }
+        else{
+
+            System.out.print("How Many Contacts You Want To Store? -->> ");
+            int userInput = sc.nextInt();
+            for(int i =0 ; i < userInput; i++) {
+
+                        System.out.print("Enter First Name : ");
+                        String firstName = sc.next();
 
 
-        System.out.println("Enter First Name");
-        String firstName = sc.next();
+                        System.out.print("Enter The Last Name : ");
+                        String lastName = sc.next();
 
-        System.out.println("Enter The Last Name");
-        String lastName = sc.next();
+                        System.out.print("Enter Your City : ");
+                        String city = sc.next();
 
-        //System.out.println("Enter Your Address");
-        //String address = sc.nextLine();
+                        System.out.print("Enter Your State : ");
+                        String state = sc.next();
 
-        System.out.println("Enter Your City");
-        String city = sc.next();
+                        System.out.print("Enter Pin Number : ");
+                        int zip = sc.nextInt();
 
-        System.out.println("Enter Your State");
-        String state = sc.next();
+                        System.out.print("Enter Your Phone Number : ");
+                        long phoneNumber = sc.nextLong();
 
-        System.out.println("Enter Pin Number");
-        int zip = sc.nextInt();
+                        System.out.print("Enter Your Email Address : ");
+                        String email = sc.next();
 
-        System.out.println("Enter Your Phone Number");
-        long phoneNumber = sc.nextLong();
+                        contact = new ContactStoring(firstName, lastName, city, state, zip, phoneNumber, email);
 
-        System.out.println("Enter Your Email Address");
-        String email = sc.next();
+                        info.add(contact);
 
-        for (int i = 0; i < info.size(); i++) {
+                        temp.add(contact);
 
-            if(info.get(i) != null && info.get(i).getFirstName().equalsIgnoreCase(firstName)){
-                return true;
+                    }
+
             }
+
+            multipleAddressBook.put(input2,temp);
+
         }
 
-        contact = new ContactStoring(firstName, lastName,  city, state, zip, phoneNumber, email);
 
-        info.add(contact);
 
-        return false;
-    }
+    public boolean editContact(long phoneNumber, String addressBookName) {
 
-    public boolean editContact(long phoneNumber) {
+        try{
+            ArrayList<ContactStoring> temp = multipleAddressBook.get(addressBookName);
 
-        for (int i = 0; i < info.size(); i++) {
-            if (info.get(i) != null && info.get(i).getPhoneNumber() == phoneNumber ) {
+            for (int i = 0; i < temp.size(); i++) {
+                if (temp.get(i) != null && temp.get(i).getPhoneNumber() == phoneNumber ) {
 
-                System.out.println("Enter First Name");
-                String firstName = sc.next();
+                    System.out.print("Enter First Name : ");
+                    String firstName = sc.next();
 
-                System.out.println("Enter last Name");
-                String lastName = sc.next();
+                    System.out.print("Enter last Name : ");
+                    String lastName = sc.next();
 
-                System.out.println("Enter Your City");
-                String city = sc.next();
+                    System.out.print("Enter Your City : ");
+                    String city = sc.next();
 
-                System.out.println("Enter Your State");
-                String state = sc.next();
+                    System.out.print("Enter Your State : ");
+                    String state = sc.next();
 
-                System.out.println("Enter Your Pin Number");
-                int zip = sc.nextInt();
+                    System.out.print("Enter Your Pin Number : ");
+                    int zip = sc.nextInt();
 
-                System.out.println("Enter Your Email");
-                String email = sc.next();
+                    System.out.print("Enter Your Email : ");
+                    String email = sc.next();
 
-                info.get(i).setFirstName(firstName);
-                info.get(i).setLastName(lastName);
-                info.get(i).setCity(city);
-                info.get(i).setState(state);
-                info.get(i).setZip(zip);
-                info.get(i).setEmail(email);
+                    info.get(i).setFirstName(firstName);
+                    info.get(i).setLastName(lastName);
+                    info.get(i).setCity(city);
+                    info.get(i).setState(state);
+                    info.get(i).setZip(zip);
+                    info.get(i).setEmail(email);
 
-                return true;
+                    return true;
+
+                }
+
             }
+
         }
+        catch (Exception e){
+
+            System.out.println("---Address Book Not Found---");
+
+        }
+
         return false;
+
     }
 
-    public boolean deleteByNumber(long phoneNumber) {
+    public boolean deleteByNumber(long phoneNumber, String addressBookName) {
 
-        for (int i = 0; i < info.size(); i++) {
-            if (info.get(i) != null && info.get(i).getPhoneNumber() == phoneNumber ) {
-                    info.remove(i);
+        try {
+
+            ArrayList<ContactStoring> temp = multipleAddressBook.get(addressBookName);
+
+            for (int i = 0; i < temp.size(); i++) {
+                if (temp.get(i) != null && temp.get(i).getPhoneNumber() == phoneNumber ) {
+                    temp.remove(i);
                     return true;
                 }
             }
+
+        }catch (Exception e){
+
+            System.out.println("---Address Book Not Found---");
+        }
+
+
         return false;
+    }
+
+    public boolean deleteAddressBook(String addressBookKey){
+
+            ArrayList temp = multipleAddressBook.remove(addressBookKey);
+            if (temp == null){
+                return false;
+            }
+            else {
+                return true;
+            }
+
     }
 
 
 
     public void displayContacts() {
 
-        for (int i = 0; i < info.size(); i++) {
-            if (info.get(i) != null) {
-                System.out.println(info.get(i));
-            }
+        System.out.println(multipleAddressBook);
 
-        }
     }
+
 }
 
 
@@ -217,7 +284,6 @@ class ContactStoring{
     public ContactStoring(String firstName, String lastName,  String city, String state, int zip, long phoneNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        //this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
@@ -265,9 +331,7 @@ class ContactStoring{
         return lastName;
     }
 
-    public String getAddress() {
-        return address;
-    }
+
 
     public String getCity() {
         return city;
@@ -294,7 +358,6 @@ class ContactStoring{
         return "Contact:- {" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zip=" + zip +
