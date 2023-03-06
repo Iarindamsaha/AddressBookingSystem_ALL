@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class AddressBooking_Main {
@@ -17,9 +18,11 @@ public class AddressBooking_Main {
 
             System.out.println("-->>Press 0 to Add AddressBooks<<--" +
                     "\n-->>Press 1 To Edit Contacts<<--" +
-                    "\n-->>Press 2 To Delete Contacts<<--\n-->>Press 3 To Delete Address Book<<--" +
+                    "\n-->>Press 2 To Delete Contacts<<--" +
+                    "\n-->>Press 3 To Delete Address Book<<--" +
                     "\n-->>Press 4 To Display The Address Books<<--" +
-                    "\n-->>Press 5 To Close The Program<<--");
+                    "\n-->>Press 5 To Search Contacts By City<<--" +
+                    "\n-->>Press 7 To Close The Program<<--");
             System.out.println();
             System.out.print("YOUR INPUT --->> ");
             in = sc.nextInt();
@@ -73,7 +76,7 @@ public class AddressBooking_Main {
 
                 }
 
-                case 5: {
+                case 7: {
 
                     System.out.println("--->Application Closing || Thank You For Using Address Book Service<---");
                     break;
@@ -94,12 +97,21 @@ public class AddressBooking_Main {
 
                 }
 
+                case 5:{
+
+                    System.out.print("Enter The City : ");
+                    String user = sc.next();
+                    contact.searchByCity(user);
+                    break;
+
+                }
+
                 default:
                     System.out.println("Please Enter The Correct Choice");
                     break;
             }
 
-        } while (in != 5);
+        } while (in != 7);
 
     }
 }
@@ -137,7 +149,7 @@ class AddressBookFeatures {
 
                 boolean update = temp.stream().anyMatch(x -> x.getFirstName().equalsIgnoreCase(firstName));
                 if (update) {
-                    System.out.println("Already Exists");
+                    System.out.println("---Contact Already Exists---");
                 } else {
 
                     System.out.print("Enter The Last Name : ");
@@ -257,10 +269,21 @@ class AddressBookFeatures {
 
     }
 
+    public void searchByCity(String city){
+
+
+        List temp = info.stream().filter(x->x.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
+        temp.stream().forEach(System.out::println);
+
+
+    }
+
 
     public void displayContacts() {
 
-        System.out.println(multipleAddressBook);
+        for( String key : multipleAddressBook.keySet()){
+            System.out.println(key + " : " + multipleAddressBook.get(key));
+        }
 
     }
 
