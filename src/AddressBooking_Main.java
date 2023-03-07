@@ -16,14 +16,17 @@ public class AddressBooking_Main {
         int in;
         do {
 
+            System.out.println("---------------------------------------------------------");
+
             System.out.println("-->>Press 0 to Add AddressBooks<<--" +
                     "\n-->>Press 1 To Edit Contacts<<--" +
                     "\n-->>Press 2 To Delete Contacts<<--" +
                     "\n-->>Press 3 To Delete Address Book<<--" +
                     "\n-->>Press 4 To Display The Address Books<<--" +
                     "\n-->>Press 5 To Search Contacts By City<<--" +
+                    "\n-->>Press 6 To See The Person Count According To City<<--" +
                     "\n-->>Press 7 To Close The Program<<--");
-            System.out.println();
+            System.out.println("----------------------------------------------------------");
             System.out.print("YOUR INPUT --->> ");
             in = sc.nextInt();
             switch (in) {
@@ -97,14 +100,29 @@ public class AddressBooking_Main {
 
                 }
 
-                case 5:{
+                case 5: {
 
                     System.out.print("Enter AddressBook Name : ");
                     String userInput = sc.next();
                     System.out.print("Enter The City : ");
                     String user = sc.next();
-                    boolean update = contact.searchByCity(userInput,user);
-                    if(!update){
+                    boolean update = contact.searchByCity(userInput, user);
+                    if (!update) {
+                        System.out.println("---City Not Found---");
+                    }
+                    break;
+
+                }
+
+                case 6: {
+
+                    System.out.print("Enter The AddressBook Name : ");
+                    String input = sc.next();
+                    System.out.print("Enter The City : ");
+                    String cityInput = sc.next();
+
+                    boolean update = contact.getCountOfContact(input, cityInput);
+                    if (!update) {
                         System.out.println("---City Not Found---");
                     }
                     break;
@@ -274,24 +292,35 @@ class AddressBookFeatures {
 
     }
 
-    public boolean searchByCity(String addressBookName, String city){
+    public boolean searchByCity(String addressBookName, String city) {
 
         try {
             ArrayList<ContactStoring> temp = multipleAddressBook.get(addressBookName);
             temp.stream().filter(a -> a.getCity().equalsIgnoreCase(city)).forEach(x -> System.out.println(x.getFirstName() + "\n"));
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("---Address Book Not Found---");
         }
         return false;
 
     }
 
+    public boolean getCountOfContact(String addressBookName, String city) {
+
+        try {
+            ArrayList<ContactStoring> temp = multipleAddressBook.get(addressBookName);
+            long count = temp.stream().filter(x -> x.getCity().equalsIgnoreCase(city)).collect(Collectors.counting());
+            System.out.println("Persons Available in The City is : " + count);
+            return true;
+        } catch (Exception e) {
+            System.out.println("---AddressBook Not Found---");
+        }
+        return false;
+    }
 
     public void displayContacts() {
 
-        for( String key : multipleAddressBook.keySet()){
+        for (String key : multipleAddressBook.keySet()) {
             System.out.println(key + " : " + multipleAddressBook.get(key));
         }
 
