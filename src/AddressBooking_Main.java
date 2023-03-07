@@ -99,9 +99,14 @@ public class AddressBooking_Main {
 
                 case 5:{
 
+                    System.out.print("Enter AddressBook Name : ");
+                    String userInput = sc.next();
                     System.out.print("Enter The City : ");
                     String user = sc.next();
-                    contact.searchByCity(user);
+                    boolean update = contact.searchByCity(userInput,user);
+                    if(!update){
+                        System.out.println("---City Not Found---");
+                    }
                     break;
 
                 }
@@ -269,12 +274,17 @@ class AddressBookFeatures {
 
     }
 
-    public void searchByCity(String city){
+    public boolean searchByCity(String addressBookName, String city){
 
-
-        List temp = info.stream().filter(x->x.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
-        temp.stream().forEach(System.out::println);
-
+        try {
+            ArrayList<ContactStoring> temp = multipleAddressBook.get(addressBookName);
+            temp.stream().filter(a -> a.getCity().equalsIgnoreCase(city)).forEach(x -> System.out.println(x.getFirstName() + "\n"));
+            return true;
+        }
+        catch (Exception e){
+            System.out.println("---Address Book Not Found---");
+        }
+        return false;
 
     }
 
