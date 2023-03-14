@@ -1,0 +1,2 @@
+Family : [Contact:- {firstName='Baba', lastName='Jio', city='Serampore', state='WestBengal', zip=756568, phoneNumber=9433570, email='dilip@gmail.com'}]
+Student : [Contact:- {firstName='Arindam', lastName='Saha', city='Serampore', state='WestBengal', zip=712202, phoneNumber=7980211558, email='asaha@gmail.com'}, Contact:- {firstName='Sumit', lastName='Das', city='Serampore', state='WestBengal', zip=700004, phoneNumber=8889, email='sumit@gmail'}]
