@@ -389,7 +389,6 @@ class AddressBookFeatures {
 
     public void writeDataToFile(){
 
-        File file = new File("C:\\Users\\asaha\\Desktop\\Java_Fellowship_242\\AddressBookSystem_ALL\\src\\OutputAddresses.txt");
         BufferedWriter bufferedWriter= null;
         try{
             bufferedWriter = new BufferedWriter(new FileWriter("C:\\Users\\asaha\\Desktop\\Java_Fellowship_242\\AddressBookSystem_ALL\\src\\OutputAddresses.txt"));
